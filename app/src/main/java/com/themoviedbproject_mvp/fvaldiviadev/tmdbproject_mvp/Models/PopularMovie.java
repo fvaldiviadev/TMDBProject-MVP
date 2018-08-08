@@ -1,4 +1,4 @@
-package com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies.Models;
+package com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

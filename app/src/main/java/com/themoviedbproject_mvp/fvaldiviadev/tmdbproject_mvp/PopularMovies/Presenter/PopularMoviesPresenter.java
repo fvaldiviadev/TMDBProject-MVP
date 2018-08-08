@@ -1,15 +1,14 @@
 package com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies.Presenter;
 
-import android.content.Intent;
 import android.util.Log;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies.Models.PopularMovie;
-import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies.Models.PopularMoviesFeed;
+import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Models.PopularMovie;
+import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Models.PopularMoviesFeed;
+import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Network.TheMovieDB_MovieService;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies.PopularMoviesContract;
-import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Search.SearchActivity;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Utils.Constants;
 
 import java.util.HashMap;
@@ -27,6 +26,7 @@ public class PopularMoviesPresenter implements PopularMoviesContract.Presenter {
     private PopularMoviesContract.View view;
     private int page;
     private int totalPages;
+
 
     @Override
     public void setView(PopularMoviesContract.View view) {
@@ -76,10 +76,13 @@ public class PopularMoviesPresenter implements PopularMoviesContract.Presenter {
                             view.addToList(newPopularMovieList.get(i));
                         }
 
-                        //TODO ver si es necesario
-                        view.notifyChangesToAdapter();
-
                         view.setLoading(false);
+
+                        if (totalPages==0) {
+                            view.hideList(true);
+                        } else {
+                            view.hideList(false);
+                        }
 
                         break;
                     case 401:
@@ -107,8 +110,7 @@ public class PopularMoviesPresenter implements PopularMoviesContract.Presenter {
     }
 
     @Override
-    public void startSearchActivity() {
-        Intent intent = new Intent(view, SearchActivity.class);
-        view.startActivity(intent);
+    public void startSearch() {
+        view.navigateToSearchActivity();
     }
 }

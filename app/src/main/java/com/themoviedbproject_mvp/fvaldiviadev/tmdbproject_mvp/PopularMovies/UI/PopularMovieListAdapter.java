@@ -10,11 +10,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies.Models.PopularMovie;
-import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies.Presenter.OnLoadMoreMoviesListener;
+import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Models.PopularMovie;
+import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies.Presenter.OnLoadMorePopularMoviesListener;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.R;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Utils.Constants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PopularMovieListAdapter extends RecyclerView.Adapter {
@@ -28,12 +29,12 @@ public class PopularMovieListAdapter extends RecyclerView.Adapter {
     private int visibleThreshold = 5;
     private int lastVisibleItem, totalItemCount;
     private boolean loading;
-    private OnLoadMoreMoviesListener onLoadMoreMoviesListener;
+    private OnLoadMorePopularMoviesListener onLoadMorePopularMoviesListener;
 
 
-    public PopularMovieListAdapter(List<PopularMovie> popularMovies, RecyclerView recyclerView) {
+    public PopularMovieListAdapter(RecyclerView recyclerView) {
 
-        popularMovieList = popularMovies;
+        popularMovieList = new ArrayList<PopularMovie>();
 
         if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
 
@@ -54,8 +55,8 @@ public class PopularMovieListAdapter extends RecyclerView.Adapter {
                             if (!loading
                                     && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
                                 // End has been reached
-                                if (onLoadMoreMoviesListener != null) {
-                                    onLoadMoreMoviesListener.onLoadMoreMovies();
+                                if (onLoadMorePopularMoviesListener != null) {
+                                    onLoadMorePopularMoviesListener.onLoadMoreMovies();
                                 }
                                 loading = true;
                             }
@@ -63,6 +64,19 @@ public class PopularMovieListAdapter extends RecyclerView.Adapter {
                     });
         }
     }
+
+
+    public void addItem(PopularMovie popularMovie) {
+        popularMovieList.add(popularMovie);
+        notifyItemInserted(popularMovieList.size());
+    }
+
+
+    public void removeLastElement() {
+        popularMovieList.remove(popularMovieList.size() - 1);
+        notifyItemRemoved(popularMovieList.size());
+    }
+
 
     @Override
     public int getItemViewType(int position) {
@@ -113,8 +127,8 @@ public class PopularMovieListAdapter extends RecyclerView.Adapter {
         return popularMovieList.size();
     }
 
-    public void setOnLoadMoreMoviesListener(OnLoadMoreMoviesListener onLoadMoreMoviesListener) {
-        this.onLoadMoreMoviesListener = onLoadMoreMoviesListener;
+    public void setOnLoadMorePopularMoviesListener(OnLoadMorePopularMoviesListener onLoadMorePopularMoviesListener) {
+        this.onLoadMorePopularMoviesListener = onLoadMorePopularMoviesListener;
     }
 
 
