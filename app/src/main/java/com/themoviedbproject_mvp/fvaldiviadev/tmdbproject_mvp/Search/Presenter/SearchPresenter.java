@@ -37,10 +37,25 @@ public class SearchPresenter implements SearchContract.Presenter {
 
     @Override
     public void setView(SearchContract.View view) {
-        this.view=view;
+        this.view = view;
     }
 
     @Override
+    public void onLoadMoreMovies(String searchText) {
+        int nextPage = page + 1;
+        if (nextPage < totalPages) {
+            search(searchText, nextPage, false);
+        }
+    }
+
+    @Override
+    public void onKeySearch(String newSearch) {
+        if (!currentSearch.equals(newSearch) && newSearch.length() > 1) {
+            search(newSearch, 1, true);
+            currentSearch = newSearch;
+        }
+    }
+
     public void search(String searchText, int searchPage, final boolean firstSearch) {
         view.hideList(false);
 
@@ -103,23 +118,5 @@ public class SearchPresenter implements SearchContract.Presenter {
                 Log.e("error", t.toString());
             }
         });
-    }
-
-    @Override
-    public void onLoadMoreMovies(String searchText) {
-        int nextPage = page + 1;
-        if (nextPage < totalPages) {
-            search(searchText,nextPage, false);
-        }
-    }
-
-    @Override
-    public void onKeySearch(KeyEvent keyEvent,String newSearch) {
-        if (keyEvent.getKeyCode() != KeyEvent.KEYCODE_BACK) {
-            if (!currentSearch.equals(newSearch) && newSearch.length() > 1) {
-                search(newSearch,1, true);
-                currentSearch = newSearch;
-            }
-        }
     }
 }

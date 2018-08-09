@@ -17,8 +17,7 @@ public interface SearchContract {
 
     interface Presenter{
         void setView(View view);
-        void search(String searchText, int searchPage, final boolean firstSearch);
         void onLoadMoreMovies(String searchText);
-        void onKeySearch(KeyEvent keyEvent,String currentSearch);
+        void onKeySearch(String currentSearch);
     }
 }
