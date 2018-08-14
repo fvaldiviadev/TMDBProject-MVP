@@ -8,6 +8,7 @@ import com.google.gson.GsonBuilder;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Models.PopularMovie;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Models.PopularMoviesFeed;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Network.TheMovieDB_MovieService;
+import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies.Interactors.PopularMoviesInteractor;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies.PopularMoviesContract;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Utils.Constants;
 
@@ -24,6 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class PopularMoviesPresenter implements PopularMoviesContract.Presenter {
 
     private PopularMoviesContract.View view;
+    private PopularMoviesContract.Interactor interactor;
     private int page;
     private int totalPages;
 
@@ -36,68 +38,18 @@ public class PopularMoviesPresenter implements PopularMoviesContract.Presenter {
     }
 
     @Override
+    public void setInteractor() {
+        interactor=new PopularMoviesInteractor();
+    }
+
+    @Override
     public void loadPopularMovieList() {
 
 
         view.addToList(null);
 
+        interactor.requestPopularMovieList(page);
 
-        Gson gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                .create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.API_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
-        TheMovieDB_MovieService theMovieDBMovieService = retrofit.create(TheMovieDB_MovieService.class);
-        Map<String, String> data = new HashMap<>();
-        data.put("api_key", Constants.API_KEY);
-        data.put("language", Constants.LANGUAGE_GET_REQUEST);
-        data.put("page", String.valueOf(page));
-        Call<PopularMoviesFeed> call = theMovieDBMovieService.getData(data);
-
-        call.enqueue(new Callback<PopularMoviesFeed>() {
-            @Override
-            public void onResponse(Call<PopularMoviesFeed> call, Response<PopularMoviesFeed> response) {
-                switch (response.code()) {
-                    case 200:
-
-                        //   remove progress item
-                        view.removeLastElement();
-
-                        PopularMoviesFeed data = response.body();
-
-                        totalPages = data.getTotalPages();
-
-                        List<PopularMovie> newPopularMovieList = data.getPopularMovies();
-                        for (int i = 0; i < newPopularMovieList.size(); i++) {
-                            view.addToList(newPopularMovieList.get(i));
-                        }
-
-                        view.setLoading(false);
-
-                        if (totalPages==0) {
-                            view.hideList(true);
-                        } else {
-                            view.hideList(false);
-                        }
-
-                        break;
-                    case 401:
-                        break;
-                    default:
-                        view.showError(" - Error: " + response.code() + " - " + response.message() + " : " + call.request().url().url());
-                        break;
-                }
-            }
-
-            @Override
-            public void onFailure(Call<PopularMoviesFeed> call, Throwable t) {
-                Log.e("error", t.toString());
-            }
-        });
     }
 
     @Override
@@ -112,5 +64,39 @@ public class PopularMoviesPresenter implements PopularMoviesContract.Presenter {
     @Override
     public void startSearch() {
         view.navigateToSearchActivity();
+    }
+
+    @Override
+    public void onResponseLoadPopularMovieList(Response<PopularMoviesFeed> response) {
+        switch (response.code()) {
+            case 200:
+
+                //   remove progress item
+                view.removeLastElement();
+
+                PopularMoviesFeed data = response.body();
+
+                totalPages = data.getTotalPages();
+
+                List<PopularMovie> newPopularMovieList = data.getPopularMovies();
+                for (int i = 0; i < newPopularMovieList.size(); i++) {
+                    view.addToList(newPopularMovieList.get(i));
+                }
+
+                view.setLoading(false);
+
+                if (totalPages==0) {
+                    view.hideList(true);
+                } else {
+                    view.hideList(false);
+                }
+
+                break;
+            case 401:
+                break;
+            default:
+                view.showError(" - Error: " + response.code() + " - " + response.message());
+                break;
+        }
     }
 }
