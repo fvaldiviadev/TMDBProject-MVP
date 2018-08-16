@@ -1,26 +1,14 @@
 package com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies.Presenter;
 
-import android.util.Log;
-
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Models.PopularMovie;
-import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Models.PopularMoviesFeed;
-import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Network.TheMovieDB_MovieService;
+import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.PopularMovie;
+import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.PopularMoviesFeed;
+import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Repositories.MoviesRepository;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies.Interactors.PopularMoviesInteractor;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies.PopularMoviesContract;
-import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Utils.Constants;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PopularMoviesPresenter implements PopularMoviesContract.Presenter {
 
@@ -29,10 +17,9 @@ public class PopularMoviesPresenter implements PopularMoviesContract.Presenter {
     private int page;
     private int totalPages;
 
-
-    @Override
-    public void setView(PopularMoviesContract.View view) {
+    public PopularMoviesPresenter(PopularMoviesContract.View view){
         this.view=view;
+        interactor=new PopularMoviesInteractor();
 
         page=1;
     }
@@ -45,7 +32,7 @@ public class PopularMoviesPresenter implements PopularMoviesContract.Presenter {
     @Override
     public void loadPopularMovieList() {
 
-
+        //Add a empty item for show the progress bar
         view.addToList(null);
 
         interactor.requestPopularMovieList(page);

@@ -1,7 +1,7 @@
 package com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies;
 
-import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Models.PopularMovie;
-import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Models.PopularMoviesFeed;
+import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.PopularMovie;
+import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.PopularMoviesFeed;
 
 import retrofit2.Response;
 
@@ -18,7 +18,6 @@ public interface PopularMoviesContract {
     }
 
     interface Presenter{
-        void setView(View view);
         void setInteractor();
         void loadPopularMovieList();
         void onLoadMoreMovies();

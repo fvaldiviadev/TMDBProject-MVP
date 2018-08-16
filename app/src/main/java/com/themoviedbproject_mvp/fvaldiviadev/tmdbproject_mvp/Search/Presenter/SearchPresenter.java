@@ -2,14 +2,13 @@ package com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Search.Presenter;
 
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.View;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Models.FoundMovie;
-import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Models.SearchResults;
-import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Network.TheMovieDB_MovieService;
+import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.FoundMovie;
+import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.SearchResults;
+import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.TheMovieDB_MovieService;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Search.SearchContract;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Utils.Constants;
 

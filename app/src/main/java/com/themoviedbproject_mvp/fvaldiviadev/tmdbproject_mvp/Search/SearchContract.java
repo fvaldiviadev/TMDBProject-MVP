@@ -2,7 +2,7 @@ package com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Search;
 
 import android.view.KeyEvent;
 
-import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Models.FoundMovie;
+import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.FoundMovie;
 
 public interface SearchContract {
 

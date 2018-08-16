@@ -1,7 +1,7 @@
-package com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Network;
+package com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network;
 
-import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Models.PopularMoviesFeed;
-import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Models.SearchResults;
+import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.SearchResults;
+import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.PopularMoviesFeed;
 
 import java.util.Map;
 

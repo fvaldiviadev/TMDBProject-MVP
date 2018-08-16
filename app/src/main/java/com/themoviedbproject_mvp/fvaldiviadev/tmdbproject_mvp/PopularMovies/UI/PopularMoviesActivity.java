@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Models.PopularMovie;
+import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.PopularMovie;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies.PopularMoviesContract;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies.Presenter.OnLoadMorePopularMoviesListener;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies.Presenter.PopularMoviesPresenter;
@@ -38,9 +38,7 @@ public class PopularMoviesActivity extends AppCompatActivity implements PopularM
         setContentView(R.layout.activity_main);
 
         //TODO inyección de dependecias con Dagger 2
-        presenter=new PopularMoviesPresenter();
-
-        presenter.setView(this);
+        presenter=new PopularMoviesPresenter(this);
 
         loadView();
 

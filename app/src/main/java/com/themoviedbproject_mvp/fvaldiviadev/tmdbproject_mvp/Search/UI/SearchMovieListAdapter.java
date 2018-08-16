@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Models.FoundMovie;
+import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.FoundMovie;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.R;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Search.Presenter.OnLoadMoreSearchMoviesListener;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Utils.Constants;

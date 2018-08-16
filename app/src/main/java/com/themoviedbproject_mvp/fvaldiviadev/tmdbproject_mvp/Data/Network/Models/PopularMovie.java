@@ -1,12 +1,11 @@
-
-package com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Models;
+package com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class FoundMovie {
+public class PopularMovie {
 
     @SerializedName("vote_count")
     @Expose
@@ -162,4 +161,5 @@ public class FoundMovie {
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
     }
+
 }
