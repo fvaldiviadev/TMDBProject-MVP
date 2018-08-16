@@ -35,7 +35,7 @@ public class MoviesRepository {
         return repository;
     }
 
-    public void requestPopularMovieList(int page) {
+    public void requestPopularMovieList(int page,final OnResponseRequestPopularMovies onResponseRequestPopularMovies) {
 
         Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
@@ -51,13 +51,12 @@ public class MoviesRepository {
         data.put("api_key", Constants.API_KEY);
         data.put("language", Constants.LANGUAGE_GET_REQUEST);
         data.put("page", String.valueOf(page));
-        Call<PopularMoviesFeed> call = theMovieDBMovieService.getData(data);
+        Call<PopularMoviesFeed> call = theMovieDBMovieService.getPopularMovies(data);
 
         call.enqueue(new Callback<PopularMoviesFeed>() {
             @Override
             public void onResponse(Call<PopularMoviesFeed> call, Response<PopularMoviesFeed> response) {
-                //TODO getInstance Repository
-                presenter.onResponseLoadPopularMovieList(response);
+                onResponseRequestPopularMovies.onResponseOK(response);
             }
 
             @Override
@@ -65,6 +64,10 @@ public class MoviesRepository {
                 Log.e("error", t.toString());
             }
         });
+    }
+
+    public interface OnResponseRequestPopularMovies {
+        void onResponseOK(Response<PopularMoviesFeed> response);
     }
 
 }
