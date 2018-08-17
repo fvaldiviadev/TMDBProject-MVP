@@ -3,6 +3,8 @@ package com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.PopularMovie;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.PopularMoviesFeed;
 
+import java.util.List;
+
 import retrofit2.Response;
 
 public interface PopularMoviesContract {
@@ -18,7 +20,6 @@ public interface PopularMoviesContract {
     }
 
     interface Presenter{
-        void setInteractor();
         void loadPopularMovieList();
         void onLoadMoreMovies();
         void startSearch();
@@ -26,7 +27,9 @@ public interface PopularMoviesContract {
     }
 
     interface Interactor{
-        void setPresenter(Presenter presenter);
         void requestPopularMovieList(int page);
+        interface PopularMovieInteractorListener{
+            void onSuccess(List<PopularMovie> newPopularMovieList);
+        }
     }
 }

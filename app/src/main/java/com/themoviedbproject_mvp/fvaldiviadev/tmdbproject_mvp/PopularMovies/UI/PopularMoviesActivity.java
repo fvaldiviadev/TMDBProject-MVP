@@ -42,6 +42,9 @@ public class PopularMoviesActivity extends AppCompatActivity implements PopularM
 
         loadView();
 
+
+        //Add a empty item for show the progress bar
+        addToList(null);
         presenter.loadPopularMovieList();
 
 

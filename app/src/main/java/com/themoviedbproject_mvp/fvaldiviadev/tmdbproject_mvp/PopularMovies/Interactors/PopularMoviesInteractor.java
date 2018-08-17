@@ -1,18 +1,20 @@
 package com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies.Interactors;
 
+import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.PopularMovie;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.PopularMoviesFeed;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Repositories.MoviesRepository;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies.PopularMoviesContract;
 
+import java.util.List;
+
 import retrofit2.Response;
 
-public class PopularMoviesInteractor implements PopularMoviesContract.Interactor{
+public class PopularMoviesInteractor implements PopularMoviesContract.Interactor,MoviesRepository.PopularMoviesRepositoryListener{
 
-    private PopularMoviesContract.Presenter presenter;
+    PopularMovieInteractorListener listener;
 
-    @Override
-    public void setPresenter(PopularMoviesContract.Presenter presenter) {
-        this.presenter=presenter;
+    public PopularMoviesInteractor(PopularMovieInteractorListener listener){
+        this.listener=listener;
     }
 
     @Override
@@ -21,16 +23,12 @@ public class PopularMoviesInteractor implements PopularMoviesContract.Interactor
 
         MoviesRepository repository=MoviesRepository.getInstance();
 
+        repository.requestPopularMovieList(page);
 
-        MoviesRepository.OnResponseRequestPopularMovies onResponseRequestPopularMovies=new MoviesRepository.OnResponseRequestPopularMovies(){
+    }
 
-            @Override
-            public void onResponseOK(Response<PopularMoviesFeed> response) {
-                presenter.onResponseLoadPopularMovieList(response);
-            }
-        };
-
-        repository.requestPopularMovieList(page,onResponseRequestPopularMovies);
-
+    @Override
+    public void onResponseOK(List<PopularMovie> newPopularMovieList) {
+        listener.onSuccess(newPopularMovieList);
     }
 }

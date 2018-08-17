@@ -10,7 +10,7 @@ import java.util.List;
 
 import retrofit2.Response;
 
-public class PopularMoviesPresenter implements PopularMoviesContract.Presenter {
+public class PopularMoviesPresenter implements PopularMoviesContract.Presenter,PopularMoviesContract.Interactor.PopularMovieInteractorListener {
 
     private PopularMoviesContract.View view;
     private PopularMoviesContract.Interactor interactor;
@@ -19,21 +19,15 @@ public class PopularMoviesPresenter implements PopularMoviesContract.Presenter {
 
     public PopularMoviesPresenter(PopularMoviesContract.View view){
         this.view=view;
-        interactor=new PopularMoviesInteractor();
+        interactor=new PopularMoviesInteractor(this);
 
         page=1;
     }
 
-    @Override
-    public void setInteractor() {
-        interactor=new PopularMoviesInteractor();
-    }
 
     @Override
     public void loadPopularMovieList() {
 
-        //Add a empty item for show the progress bar
-        view.addToList(null);
 
         interactor.requestPopularMovieList(page);
 
@@ -58,7 +52,7 @@ public class PopularMoviesPresenter implements PopularMoviesContract.Presenter {
         switch (response.code()) {
             case 200:
 
-                //   remove progress item
+                               //   remove progress item
                 view.removeLastElement();
 
                 PopularMoviesFeed data = response.body();
@@ -85,5 +79,10 @@ public class PopularMoviesPresenter implements PopularMoviesContract.Presenter {
                 view.showError(" - Error: " + response.code() + " - " + response.message());
                 break;
         }
+    }
+
+    @Override
+    public void onSuccess(List<PopularMovie> newPopularMovieList) {
+
     }
 }
