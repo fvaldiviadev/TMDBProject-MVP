@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.PopularMoviesFeed;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.TheMovieDB_MovieService;
-import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Repositories.MoviesRepository;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Utils.Constants;
 
 import java.util.HashMap;
@@ -25,10 +24,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MoviesDAO {
 
-    OnResponseRequestPopularMovies onResponseRequestPopularMovies;
+    ResponseRequestPopularMoviesDAO listener;
 
-    public MoviesDAO(OnResponseRequestPopularMovies onResponseRequestPopularMovies){
-        this.onResponseRequestPopularMovies=onResponseRequestPopularMovies;
+    public MoviesDAO(ResponseRequestPopularMoviesDAO listener){
+        this.listener = listener;
     }
 
     public void requestPopularMovieList(int page) {
@@ -52,17 +51,18 @@ public class MoviesDAO {
         call.enqueue(new Callback<PopularMoviesFeed>() {
             @Override
             public void onResponse(Call<PopularMoviesFeed> call, Response<PopularMoviesFeed> response) {
-                onResponseRequestPopularMovies.onResponseOK(response);
+                listener.onResponseDAO(response);
             }
 
             @Override
             public void onFailure(Call<PopularMoviesFeed> call, Throwable t) {
-                Log.e("error", t.toString());
+                listener.onFailureDAO(t.toString());
             }
         });
     }
 
-    public interface OnResponseRequestPopularMovies {
-        void onResponseOK(Response<PopularMoviesFeed> response);
+    public interface ResponseRequestPopularMoviesDAO {
+        void onResponseDAO(Response<PopularMoviesFeed> response);
+        void onFailureDAO(String error);
     }
 }

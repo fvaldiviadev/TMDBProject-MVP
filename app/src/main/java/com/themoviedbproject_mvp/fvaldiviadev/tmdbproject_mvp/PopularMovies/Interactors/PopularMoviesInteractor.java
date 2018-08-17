@@ -1,34 +1,59 @@
 package com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies.Interactors;
 
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.PopularMovie;
-import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.PopularMoviesFeed;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Repositories.MoviesRepository;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies.PopularMoviesContract;
 
 import java.util.List;
 
-import retrofit2.Response;
+public class PopularMoviesInteractor implements PopularMoviesContract.Interactor,MoviesRepository.ResponseRequestPopularMoviesRepository {
 
-public class PopularMoviesInteractor implements PopularMoviesContract.Interactor,MoviesRepository.PopularMoviesRepositoryListener{
+    ResponseRequestPopularMovieInteractor listener;
 
-    PopularMovieInteractorListener listener;
+    int page;
+    int totalPages;
 
-    public PopularMoviesInteractor(PopularMovieInteractorListener listener){
+    public PopularMoviesInteractor(ResponseRequestPopularMovieInteractor listener){
         this.listener=listener;
+
+        page=1;
     }
 
     @Override
-    public void requestPopularMovieList(int page) {
+    public void requestPopularMovieList() {
 
 
-        MoviesRepository repository=MoviesRepository.getInstance();
+        MoviesRepository repository= new MoviesRepository(this);
 
         repository.requestPopularMovieList(page);
 
     }
 
     @Override
-    public void onResponseOK(List<PopularMovie> newPopularMovieList) {
-        listener.onSuccess(newPopularMovieList);
+    public void requestLoadMoreMovies() {
+        int nextPage = page + 1;
+        if (nextPage < totalPages) {
+            page=nextPage;
+            requestPopularMovieList();
+        }
+    }
+
+    @Override
+    public void onResponseOKRepository(List<PopularMovie> newPopularMovieList,int totalPages) {
+
+        this.totalPages=totalPages;
+
+        if (totalPages==0) {
+            listener.hideList(true);
+        } else {
+            listener.hideList(false);
+        }
+
+        listener.onSuccessInteractor(newPopularMovieList);
+    }
+
+    @Override
+    public void onFailureRepository(int responseCode, String responseMessage) {
+        listener.onFailureInteractor("Code error: "+responseCode+" " +responseMessage);
     }
 }

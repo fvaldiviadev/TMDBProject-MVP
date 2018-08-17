@@ -18,6 +18,8 @@ import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies.Pres
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.R;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Search.UI.SearchActivity;
 
+import java.util.List;
+
 
 public class PopularMoviesActivity extends AppCompatActivity implements PopularMoviesContract.View {
 
@@ -111,14 +113,18 @@ public class PopularMoviesActivity extends AppCompatActivity implements PopularM
     }
 
     @Override
-    public void removeLastElement() {
-        adapter.removeLastElement();
+    public void addList(List<PopularMovie> newPopularMovieList) {
+
+        //   remove progress item
+        removeLastElement();
+
+        adapter.addList(newPopularMovieList);
+
+        setLoading(false);
+
     }
 
-    @Override
-    public void setLoading(boolean loading) {
-        adapter.setLoading(loading);
-    }
+
 
     @Override
     public void showError(String error) {
@@ -140,5 +146,13 @@ public class PopularMoviesActivity extends AppCompatActivity implements PopularM
             rvPopularMovieList.setVisibility(View.VISIBLE);
             tvEmptyView.setVisibility(View.GONE);
         }
+    }
+
+    public void setLoading(boolean loading) {
+        adapter.setLoading(loading);
+    }
+
+    public void removeLastElement() {
+        adapter.removeLastElement();
     }
 }

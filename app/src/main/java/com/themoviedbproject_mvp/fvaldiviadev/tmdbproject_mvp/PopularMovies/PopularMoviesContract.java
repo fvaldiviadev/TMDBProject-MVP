@@ -11,8 +11,7 @@ public interface PopularMoviesContract {
 
     interface View{
         void addToList(PopularMovie popularMovie);
-        void removeLastElement();
-        void setLoading(boolean loading);
+        void addList(List<PopularMovie> newPopularMovieList);
         void showError(String error);
         void navigateToSearchActivity();
         void hideList(boolean hide);
@@ -23,13 +22,15 @@ public interface PopularMoviesContract {
         void loadPopularMovieList();
         void onLoadMoreMovies();
         void startSearch();
-        void onResponseLoadPopularMovieList(Response<PopularMoviesFeed> response);
     }
 
     interface Interactor{
-        void requestPopularMovieList(int page);
-        interface PopularMovieInteractorListener{
-            void onSuccess(List<PopularMovie> newPopularMovieList);
+        void requestPopularMovieList();
+        void requestLoadMoreMovies();
+        interface ResponseRequestPopularMovieInteractor {
+            void onSuccessInteractor(List<PopularMovie> newPopularMovieList);
+            void onFailureInteractor(String error);
+            void hideList(boolean hide);
         }
     }
 }

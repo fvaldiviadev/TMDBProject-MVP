@@ -71,6 +71,15 @@ public class PopularMovieListAdapter extends RecyclerView.Adapter {
         notifyItemInserted(popularMovieList.size());
     }
 
+    public void addList(List<PopularMovie> newPopularMovieList) {
+        for (PopularMovie popularMovie:
+             newPopularMovieList) {
+
+            popularMovieList.add(popularMovie);
+            notifyItemInserted(popularMovieList.size());
+        }
+    }
+
 
     public void removeLastElement() {
         popularMovieList.remove(popularMovieList.size() - 1);
