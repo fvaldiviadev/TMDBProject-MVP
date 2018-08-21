@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.PopularMovie;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies.PopularMoviesContract;
-import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies.Presenter.OnLoadMorePopularMoviesListener;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies.Presenter.PopularMoviesPresenter;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.R;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Search.UI.SearchActivity;
@@ -80,7 +79,10 @@ public class PopularMoviesActivity extends AppCompatActivity implements PopularM
         adapter.setOnLoadMorePopularMoviesListener(new OnLoadMorePopularMoviesListener() {
             @Override
             public void onLoadMoreMovies() {
-                presenter.onLoadMoreMovies();
+                //Add a empty item for show the progress bar
+                addToList(null);
+
+                presenter.loadMoreMovies();
 
 
             }

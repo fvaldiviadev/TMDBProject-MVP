@@ -29,7 +29,7 @@ public class PopularMoviesPresenter implements PopularMoviesContract.Presenter,P
     }
 
     @Override
-    public void onLoadMoreMovies() {
+    public void loadMoreMovies() {
 
         interactor.requestLoadMoreMovies();
     }

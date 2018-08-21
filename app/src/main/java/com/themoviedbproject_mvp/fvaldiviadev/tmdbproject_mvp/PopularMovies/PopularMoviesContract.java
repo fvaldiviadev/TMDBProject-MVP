@@ -20,7 +20,7 @@ public interface PopularMoviesContract {
 
     interface Presenter{
         void loadPopularMovieList();
-        void onLoadMoreMovies();
+        void loadMoreMovies();
         void startSearch();
     }
 

@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.FoundMovie;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.R;
-import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Search.Presenter.OnLoadMoreSearchMoviesListener;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Search.Presenter.SearchPresenter;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Search.SearchContract;
 
@@ -37,9 +36,7 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
         setContentView(R.layout.activity_search);
 
         //TODO usar Dagger2
-        presenter = new SearchPresenter();
-
-        presenter.setView(this);
+        presenter = new SearchPresenter(this);
 
         loadView();
 
@@ -75,7 +72,7 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
         adapter.setOnLoadMoreMoviesListener(new OnLoadMoreSearchMoviesListener() {
             @Override
             public void onLoadMoreMovies() {
-                presenter.onLoadMoreMovies(searchEditText.getText().toString());
+                presenter.loadMoreMovies(searchEditText.getText().toString());
             }
         });
     }
