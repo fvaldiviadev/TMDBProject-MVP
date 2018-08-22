@@ -67,6 +67,15 @@ public class SearchMovieListAdapter extends RecyclerView.Adapter {
         notifyItemInserted(foundMovieList.size());
     }
 
+    public void addList(List<FoundMovie> newPopularMovieList) {
+        for (FoundMovie popularMovie:
+                newPopularMovieList) {
+
+            foundMovieList.add(popularMovie);
+            notifyItemInserted(foundMovieList.size());
+        }
+    }
+
     public void clearList() {
         foundMovieList.clear();
         notifyDataSetChanged();

@@ -9,7 +9,7 @@ import java.util.List;
 public interface SearchContract {
 
     interface View{
-        void addToList(FoundMovie foundMovie);
+        void addList(List<FoundMovie> newFoundMovieList);
         void clearList();
         void setLoading(boolean loading);
         void showError(String error);
@@ -20,7 +20,7 @@ public interface SearchContract {
     interface Presenter{
         void search(String searchText, int searchPage, final boolean firstSearch);
         void loadMoreMovies(String searchText);
-        void onKeySearch(KeyEvent keyEvent,String currentSearch);
+        void onKeySearch(KeyEvent keyEvent,String newSearch);
     }
 
     interface Interactor{
@@ -30,6 +30,8 @@ public interface SearchContract {
         interface ResponseRequestSearchInteractor{
             void onSuccessInteractor(List<FoundMovie> foundMovieList);
             void onFailureInteractor(String error);
+            void hideList(boolean hide);
+            void clearList();
         }
     }
 }

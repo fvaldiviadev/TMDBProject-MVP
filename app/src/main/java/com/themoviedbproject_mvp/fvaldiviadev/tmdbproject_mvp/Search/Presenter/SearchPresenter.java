@@ -28,16 +28,9 @@ public class SearchPresenter implements SearchContract.Presenter,SearchContract.
     private SearchContract.View view;
     private SearchContract.Interactor interactor;
 
-    private int totalPages;
-
-    int page;
-
-    Call<SearchResults> call;
-
-    String currentSearch = "";
 
 
-    public void SearchPresenter(SearchContract.View view){
+    public SearchPresenter(SearchContract.View view){
 
         this.view=view;
 
@@ -47,38 +40,37 @@ public class SearchPresenter implements SearchContract.Presenter,SearchContract.
 
     @Override
     public void search(String searchText, int searchPage, final boolean firstSearch) {
-
         interactor.requestSearch(searchText,searchPage,firstSearch);
-
-
-
     }
 
     @Override
     public void loadMoreMovies(String searchText) {
-        int nextPage = page + 1;
-        if (nextPage < totalPages) {
-            search(searchText,nextPage, false);
-        }
+        interactor.requestLoadMoreMovies(searchText);
     }
 
     @Override
     public void onKeySearch(KeyEvent keyEvent,String newSearch) {
-        if (keyEvent.getKeyCode() != KeyEvent.KEYCODE_BACK) {
-            if (!currentSearch.equals(newSearch) && newSearch.length() > 1) {
-                search(newSearch,1, true);
-                currentSearch = newSearch;
-            }
-        }
+        interactor.onKeySearch(keyEvent,newSearch);
     }
 
     @Override
     public void onSuccessInteractor(List<FoundMovie> foundMovieList) {
 
+        view.addList(foundMovieList);
     }
 
     @Override
     public void onFailureInteractor(String error) {
+        view.showError(" - Error: " + error);
+    }
 
+    @Override
+    public void hideList(boolean hide) {
+        view.hideList(hide);
+    }
+
+    @Override
+    public void clearList() {
+        view.clearList();
     }
 }

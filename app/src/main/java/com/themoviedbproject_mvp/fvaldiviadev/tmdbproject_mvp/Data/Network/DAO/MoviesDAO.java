@@ -1,11 +1,10 @@
 package com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.DAO;
 
-import android.util.Log;
-
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.PopularMoviesFeed;
+import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.SearchResults;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.TheMovieDB_MovieService;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Utils.Constants;
 
@@ -24,22 +23,35 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MoviesDAO {
 
-    ResponseRequestPopularMoviesDAO listener;
+    ResponseRequestPopularMoviesDAO listenerPopularMovie;
+    ResponseRequestSearchDAO listenerSearch;
+
+    Call<SearchResults> call;
+
+    Retrofit retrofit;
 
     public MoviesDAO(ResponseRequestPopularMoviesDAO listener){
-        this.listener = listener;
+        this.listenerPopularMovie = listener;
     }
 
-    public void requestPopularMovieList(int page) {
+    public MoviesDAO(ResponseRequestSearchDAO listener){
+        this.listenerSearch = listener;
+    }
 
+    public void initRetrofit(){
         Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .create();
 
-        Retrofit retrofit = new Retrofit.Builder()
+        retrofit = new Retrofit.Builder()
                 .baseUrl(Constants.API_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
+    }
+
+    public void requestPopularMovieList(int page) {
+
+        initRetrofit();
 
         TheMovieDB_MovieService theMovieDBMovieService = retrofit.create(TheMovieDB_MovieService.class);
         Map<String, String> data = new HashMap<>();
@@ -51,18 +63,52 @@ public class MoviesDAO {
         call.enqueue(new Callback<PopularMoviesFeed>() {
             @Override
             public void onResponse(Call<PopularMoviesFeed> call, Response<PopularMoviesFeed> response) {
-                listener.onResponseDAO(response);
+                listenerPopularMovie.onResponseDAO(response);
             }
 
             @Override
             public void onFailure(Call<PopularMoviesFeed> call, Throwable t) {
-                listener.onFailureDAO(t.toString());
+                listenerPopularMovie.onFailureDAO(t.toString());
+            }
+        });
+    }
+
+    public void requestSearch(String searchText, int searchPage) {
+
+        initRetrofit();
+
+        if (call != null && call.isExecuted()) {
+            call.cancel();
+        }
+
+        TheMovieDB_MovieService theMovieDBMovieService = retrofit.create(TheMovieDB_MovieService.class);
+        Map<String, String> data = new HashMap<>();
+        data.put("api_key", Constants.API_KEY);
+        data.put("language", Constants.LANGUAGE_GET_REQUEST);
+        data.put("query", searchText);
+        data.put("page", String.valueOf(searchPage));
+        call = theMovieDBMovieService.getSearchResults(data);
+
+        call.enqueue(new Callback<SearchResults>() {
+            @Override
+            public void onResponse(Call<SearchResults> call, Response<SearchResults> response) {
+                listenerSearch.onResponseDAO(response);
+            }
+
+            @Override
+            public void onFailure(Call<SearchResults> call, Throwable t) {
+                listenerSearch.onFailureDAO(t.toString());
             }
         });
     }
 
     public interface ResponseRequestPopularMoviesDAO {
         void onResponseDAO(Response<PopularMoviesFeed> response);
+        void onFailureDAO(String error);
+    }
+
+    public interface ResponseRequestSearchDAO{
+        void onResponseDAO(Response<SearchResults> response);
         void onFailureDAO(String error);
     }
 }

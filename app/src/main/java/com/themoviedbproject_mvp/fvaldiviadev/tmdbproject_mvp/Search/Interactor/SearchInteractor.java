@@ -28,93 +28,67 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SearchInteractor implements SearchContract.Interactor,SearchRepository.ResponseRequestSearchRepository {
 
     ResponseRequestSearchInteractor listener;
+    SearchRepository repository;
 
-    public void SearchInteractor(ResponseRequestSearchInteractor listener){
+    private int totalPages;
+
+    int page;
+    String currentSearch;
+
+
+    public SearchInteractor(ResponseRequestSearchInteractor listener){
         this.listener=listener;
+        repository=new SearchRepository(this);
+
+        page=1;
+        currentSearch = "";
     }
 
     @Override
     public void requestSearch(String searchText, int searchPage, boolean firstSearch) {
-        view.hideList(false);
+        listener.hideList(false);
+        page=searchPage;
+        repository.requestSearch(searchText,searchPage,firstSearch);
 
-        if (call != null && call.isExecuted()) {
-            call.cancel();
-        }
-        page = searchPage;
-        Gson gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                .create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.API_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
-        TheMovieDB_MovieService theMovieDBMovieService = retrofit.create(TheMovieDB_MovieService.class);
-        Map<String, String> data = new HashMap<>();
-        data.put("api_key", Constants.API_KEY);
-        data.put("language", Constants.LANGUAGE_GET_REQUEST);
-        data.put("query", searchText);
-        data.put("page", String.valueOf(page));
-        call = theMovieDBMovieService.getSearchResults(data);
-
-
-        call.enqueue(new Callback<SearchResults>() {
-            @Override
-            public void onResponse(Call<SearchResults> call, Response<SearchResults> response) {
-                switch (response.code()) {
-                    case 200:
-                        view.hideList(true);
-
-                        SearchResults data = response.body();
-
-                        if (firstSearch) {
-                            view.clearList();
-                        }
-
-                        totalPages = data.getTotalPages();
-
-                        List<FoundMovie> newFoundMovieList = data.getResults();
-                        for (int i = 0; i < newFoundMovieList.size(); i++) {
-                            view.addToList(newFoundMovieList.get(i));
-                            view.setLoading(false);
-                        }
-
-                        break;
-                    case 401:
-                        view.hideList(true);
-                        break;
-                    default:
-                        view.showError(" - Error: " + response.code() + " - " + response.message() + " : " + call.request().url().url());
-
-                        break;
-                }
-            }
-
-            @Override
-            public void onFailure(Call<SearchResults> call, Throwable t) {
-                Log.e("error", t.toString());
-            }
-        });
     }
 
     @Override
     public void requestLoadMoreMovies(String searchText) {
-
+        int nextPage = page + 1;
+        if (nextPage < totalPages) {
+            requestSearch(searchText,nextPage, false);
+        }
     }
 
     @Override
-    public void onKeySearch(KeyEvent keyEvent, String currentSearch) {
-
+    public void onKeySearch(KeyEvent keyEvent, String newSearch) {
+        if (keyEvent.getKeyCode() != KeyEvent.KEYCODE_BACK) {
+            if (!currentSearch.equals(newSearch) && newSearch.length() > 1) {
+                requestSearch(newSearch,1, true);
+                currentSearch = newSearch;
+            }
+        }
     }
 
     @Override
     public void onResponseOKRepository(List<FoundMovie> newPopularMovieList, int totalPages) {
 
+        this.totalPages=totalPages;
+
+        listener.hideList(true);
+
+        listener.onSuccessInteractor(newPopularMovieList);
     }
 
     @Override
     public void onFailureRepository(int responseCode, String responseMessage) {
 
+        listener.hideList(true);
+        listener.onFailureInteractor("Code error: "+responseCode+" " +responseMessage);
+    }
+
+    @Override
+    public void clearList() {
+        listener.clearList();
     }
 }

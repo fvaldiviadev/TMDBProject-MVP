@@ -17,6 +17,8 @@ import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.R;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Search.Presenter.SearchPresenter;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Search.SearchContract;
 
+import java.util.List;
+
 public class SearchActivity extends AppCompatActivity implements SearchContract.View {
 
     private SearchContract.Presenter presenter;
@@ -66,7 +68,7 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
 
         recyclerView.setAdapter(adapter);
 
-        adapter.setLoading(true);
+        setLoading(true);
 
 
         adapter.setOnLoadMoreMoviesListener(new OnLoadMoreSearchMoviesListener() {
@@ -91,14 +93,15 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
     }
 
     @Override
-    public void addToList(FoundMovie foundMovie) {
-
-        adapter.addItem(foundMovie);
+    public void clearList() {
+        adapter.clearList();
     }
 
     @Override
-    public void clearList() {
-        adapter.clearList();
+    public void addList(List<FoundMovie> newFoundMovieList) {
+
+        adapter.addList(newFoundMovieList);
+        setLoading(false);
     }
 
     @Override
