@@ -6,7 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -51,7 +52,7 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
         pb_searchlist = findViewById(R.id.pb_searchlist);
 
 
-        searchEditText.setOnKeyListener(listenerSearchEditText());
+        searchEditText.addTextChangedListener(listenerTextWatcher());
 
         recyclerView.setHasFixedSize(true);
 
@@ -79,17 +80,24 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
         });
     }
 
-    private View.OnKeyListener listenerSearchEditText() {
-        View.OnKeyListener listener = new View.OnKeyListener() {
+    private TextWatcher listenerTextWatcher(){
+        TextWatcher textWatcher=new TextWatcher() {
             @Override
-            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                presenter.onKeySearch(keyEvent, searchEditText.getText().toString());
+            }
 
-                return false;
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                presenter.onKeySearch(searchEditText.getText().toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         };
-        return listener;
+        return textWatcher;
     }
 
     @Override

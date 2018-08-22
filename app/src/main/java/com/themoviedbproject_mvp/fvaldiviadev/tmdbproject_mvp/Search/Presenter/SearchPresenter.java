@@ -1,27 +1,10 @@
 package com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Search.Presenter;
 
-import android.util.Log;
-import android.view.KeyEvent;
-
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.FoundMovie;
-import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.SearchResults;
-import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.TheMovieDB_MovieService;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Search.Interactor.SearchInteractor;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Search.SearchContract;
-import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Utils.Constants;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SearchPresenter implements SearchContract.Presenter,SearchContract.Interactor.ResponseRequestSearchInteractor {
 
@@ -49,8 +32,8 @@ public class SearchPresenter implements SearchContract.Presenter,SearchContract.
     }
 
     @Override
-    public void onKeySearch(KeyEvent keyEvent,String newSearch) {
-        interactor.onKeySearch(keyEvent,newSearch);
+    public void onKeySearch(String newSearch) {
+        interactor.onKeySearch(newSearch);
     }
 
     @Override

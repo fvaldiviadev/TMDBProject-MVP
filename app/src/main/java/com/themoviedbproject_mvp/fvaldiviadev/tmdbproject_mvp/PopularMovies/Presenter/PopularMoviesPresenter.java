@@ -1,13 +1,10 @@
 package com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies.Presenter;
 
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.PopularMovie;
-import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.PopularMoviesFeed;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies.Interactors.PopularMoviesInteractor;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies.PopularMoviesContract;
 
 import java.util.List;
-
-import retrofit2.Response;
 
 public class PopularMoviesPresenter implements PopularMoviesContract.Presenter,PopularMoviesContract.Interactor.ResponseRequestPopularMovieInteractor {
 
