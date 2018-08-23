@@ -22,7 +22,7 @@ public class PopularMoviesInteractor implements PopularMoviesContract.Interactor
     @Override
     public void requestPopularMovieList() {
 
-
+        //TODO hacer el repository singleton por mejorar rendimiento
         MoviesRepository repository= new MoviesRepository(this);
 
         repository.requestPopularMovieList(page);

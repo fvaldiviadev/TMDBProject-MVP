@@ -20,7 +20,7 @@ import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Search.UI.SearchAc
 import java.util.List;
 
 
-public class PopularMoviesActivity extends AppCompatActivity implements PopularMoviesContract.View {
+public class PopularMoviesActivity extends AppCompatActivity implements PopularMoviesContract.View,PopularMoviesContract.View.OnLoadMorePopularMoviesListener{
 
 
 
@@ -67,26 +67,12 @@ public class PopularMoviesActivity extends AppCompatActivity implements PopularM
     }
 
     private void setAdapter() {
-        adapter = new PopularMovieListAdapter(rvPopularMovieList);
+        adapter = new PopularMovieListAdapter(rvPopularMovieList,this);
 
         rvPopularMovieList.setAdapter(adapter);
 
         adapter.setLoading(true);
 
-
-
-
-        adapter.setOnLoadMorePopularMoviesListener(new OnLoadMorePopularMoviesListener() {
-            @Override
-            public void onLoadMoreMovies() {
-                //Add a empty item for show the progress bar
-                addToList(null);
-
-                presenter.loadMoreMovies();
-
-
-            }
-        });
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -156,5 +142,13 @@ public class PopularMoviesActivity extends AppCompatActivity implements PopularM
 
     public void removeLastElement() {
         adapter.removeLastElement();
+    }
+
+    @Override
+    public void onLoadMoreMovies() {
+        //Add a empty item for show the progress bar
+        addToList(null);
+
+        presenter.loadMoreMovies();
     }
 }

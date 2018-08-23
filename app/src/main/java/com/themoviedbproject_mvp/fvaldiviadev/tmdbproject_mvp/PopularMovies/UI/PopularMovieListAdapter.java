@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.PopularMovie;
+import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies.PopularMoviesContract;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.R;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Utils.Constants;
 
@@ -28,10 +29,12 @@ public class PopularMovieListAdapter extends RecyclerView.Adapter {
     private int visibleThreshold = 5;
     private int lastVisibleItem, totalItemCount;
     private boolean loading;
-    private OnLoadMorePopularMoviesListener onLoadMorePopularMoviesListener;
+    private PopularMoviesContract.View.OnLoadMorePopularMoviesListener onLoadMorePopularMoviesListener;
 
 
-    public PopularMovieListAdapter(RecyclerView recyclerView) {
+    public PopularMovieListAdapter(RecyclerView recyclerView, final PopularMoviesContract.View.OnLoadMorePopularMoviesListener onLoadMorePopularMoviesListener) {
+
+        this.onLoadMorePopularMoviesListener=onLoadMorePopularMoviesListener;
 
         popularMovieList = new ArrayList<PopularMovie>();
 
@@ -135,9 +138,6 @@ public class PopularMovieListAdapter extends RecyclerView.Adapter {
         return popularMovieList.size();
     }
 
-    public void setOnLoadMorePopularMoviesListener(OnLoadMorePopularMoviesListener onLoadMorePopularMoviesListener) {
-        this.onLoadMorePopularMoviesListener = onLoadMorePopularMoviesListener;
-    }
 
 
     public static class PopularMovieViewHolder extends RecyclerView.ViewHolder {

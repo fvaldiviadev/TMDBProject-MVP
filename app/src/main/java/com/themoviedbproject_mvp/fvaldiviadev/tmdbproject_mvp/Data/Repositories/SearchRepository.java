@@ -17,6 +17,8 @@ public class SearchRepository implements MoviesDAO.ResponseRequestSearchDAO {
 
     boolean firstSearch;
 
+//TODO mover a MoviesRepository
+
     public SearchRepository(ResponseRequestSearchRepository listener){
         this.listener=listener;
 

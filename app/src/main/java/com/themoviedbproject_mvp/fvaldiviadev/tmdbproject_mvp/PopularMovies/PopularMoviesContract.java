@@ -15,6 +15,9 @@ public interface PopularMoviesContract {
         void showError(String error);
         void navigateToSearchActivity();
         void hideList(boolean hide);
+        interface OnLoadMorePopularMoviesListener {
+            void onLoadMoreMovies();
+        }
 
     }
 
