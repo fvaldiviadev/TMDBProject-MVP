@@ -1,5 +1,7 @@
 package com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies.Interactors;
 
+import android.graphics.Movie;
+
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.PopularMovie;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Repositories.MoviesRepository;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies.PopularMoviesContract;
@@ -9,6 +11,7 @@ import java.util.List;
 public class PopularMoviesInteractor implements PopularMoviesContract.Interactor,MoviesRepository.ResponseRequestPopularMoviesRepository {
 
     ResponseRequestPopularMovieInteractor listener;
+    MoviesRepository repository;
 
     int page;
     int totalPages;
@@ -16,14 +19,14 @@ public class PopularMoviesInteractor implements PopularMoviesContract.Interactor
     public PopularMoviesInteractor(ResponseRequestPopularMovieInteractor listener){
         this.listener=listener;
 
+        repository= MoviesRepository.getInstance();
+        repository.setResponseRequestPopularMoviesRepository(this);
+
         page=1;
     }
 
     @Override
     public void requestPopularMovieList() {
-
-        //TODO hacer el repository singleton por mejorar rendimiento
-        MoviesRepository repository= new MoviesRepository(this);
 
         repository.requestPopularMovieList(page);
 
@@ -39,7 +42,7 @@ public class PopularMoviesInteractor implements PopularMoviesContract.Interactor
     }
 
     @Override
-    public void onResponseOKRepository(List<PopularMovie> newPopularMovieList,int totalPages) {
+    public void onResponseOKPopularMoviesRepository(List<PopularMovie> newPopularMovieList,int totalPages) {
 
         this.totalPages=totalPages;
 
@@ -53,7 +56,7 @@ public class PopularMoviesInteractor implements PopularMoviesContract.Interactor
     }
 
     @Override
-    public void onFailureRepository(int responseCode, String responseMessage) {
+    public void onFailurePopularMoviesRepository(int responseCode, String responseMessage) {
         listener.onFailureInteractor("Code error: "+responseCode+" " +responseMessage);
     }
 }

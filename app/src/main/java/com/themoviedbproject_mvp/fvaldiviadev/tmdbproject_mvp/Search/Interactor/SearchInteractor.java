@@ -1,15 +1,15 @@
 package com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Search.Interactor;
 
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.FoundMovie;
-import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Repositories.SearchRepository;
+import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Repositories.MoviesRepository;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Search.SearchContract;
 
 import java.util.List;
 
-public class SearchInteractor implements SearchContract.Interactor,SearchRepository.ResponseRequestSearchRepository {
+public class SearchInteractor implements SearchContract.Interactor,MoviesRepository.ResponseRequestSearchRepository {
 
     ResponseRequestSearchInteractor listener;
-    SearchRepository repository;
+    MoviesRepository repository;
 
     private int totalPages;
 
@@ -19,7 +19,9 @@ public class SearchInteractor implements SearchContract.Interactor,SearchReposit
 
     public SearchInteractor(ResponseRequestSearchInteractor listener){
         this.listener=listener;
-        repository=new SearchRepository(this);
+
+        repository= MoviesRepository.getInstance();
+        repository.setResponseRequestSearchRepository(this);
 
         page=1;
         currentSearch = "";
@@ -29,6 +31,7 @@ public class SearchInteractor implements SearchContract.Interactor,SearchReposit
     public void requestSearch(String searchText, int searchPage, boolean firstSearch) {
         listener.hideList(false);
         page=searchPage;
+        
         repository.requestSearch(searchText,searchPage,firstSearch);
 
     }
@@ -51,7 +54,7 @@ public class SearchInteractor implements SearchContract.Interactor,SearchReposit
     }
 
     @Override
-    public void onResponseOKRepository(List<FoundMovie> newPopularMovieList, int totalPages) {
+    public void onResponseOKSearchRepository(List<FoundMovie> newPopularMovieList, int totalPages) {
 
         this.totalPages=totalPages;
 
@@ -61,7 +64,7 @@ public class SearchInteractor implements SearchContract.Interactor,SearchReposit
     }
 
     @Override
-    public void onFailureRepository(int responseCode, String responseMessage) {
+    public void onFailureSearchRepository(int responseCode, String responseMessage) {
 
         listener.hideList(true);
         listener.onFailureInteractor("Code error: "+responseCode+" " +responseMessage);

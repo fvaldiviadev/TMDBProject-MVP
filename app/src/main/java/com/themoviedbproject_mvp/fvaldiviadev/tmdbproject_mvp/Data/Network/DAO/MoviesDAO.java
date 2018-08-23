@@ -30,12 +30,9 @@ public class MoviesDAO {
 
     Retrofit retrofit;
 
-    public MoviesDAO(ResponseRequestPopularMoviesDAO listener){
+    public MoviesDAO(ResponseRequestPopularMoviesDAO listener,ResponseRequestSearchDAO listenerSearch){
         this.listenerPopularMovie = listener;
-    }
-
-    public MoviesDAO(ResponseRequestSearchDAO listener){
-        this.listenerSearch = listener;
+        this.listenerSearch = listenerSearch;
     }
 
     public void initRetrofit(){
@@ -63,12 +60,12 @@ public class MoviesDAO {
         call.enqueue(new Callback<PopularMoviesFeed>() {
             @Override
             public void onResponse(Call<PopularMoviesFeed> call, Response<PopularMoviesFeed> response) {
-                listenerPopularMovie.onResponseDAO(response);
+                listenerPopularMovie.onResponsePopularMoviesDAO(response);
             }
 
             @Override
             public void onFailure(Call<PopularMoviesFeed> call, Throwable t) {
-                listenerPopularMovie.onFailureDAO(t.toString());
+                listenerPopularMovie.onFailurePopularMoviesDAO(t.toString());
             }
         });
     }
@@ -92,23 +89,23 @@ public class MoviesDAO {
         call.enqueue(new Callback<SearchResults>() {
             @Override
             public void onResponse(Call<SearchResults> call, Response<SearchResults> response) {
-                listenerSearch.onResponseDAO(response);
+                listenerSearch.onResponseSearchDAO(response);
             }
 
             @Override
             public void onFailure(Call<SearchResults> call, Throwable t) {
-                listenerSearch.onFailureDAO(t.toString());
+                listenerSearch.onFailureSearchDAO(t.toString());
             }
         });
     }
 
     public interface ResponseRequestPopularMoviesDAO {
-        void onResponseDAO(Response<PopularMoviesFeed> response);
-        void onFailureDAO(String error);
+        void onResponsePopularMoviesDAO(Response<PopularMoviesFeed> response);
+        void onFailurePopularMoviesDAO(String error);
     }
 
     public interface ResponseRequestSearchDAO{
-        void onResponseDAO(Response<SearchResults> response);
-        void onFailureDAO(String error);
+        void onResponseSearchDAO(Response<SearchResults> response);
+        void onFailureSearchDAO(String error);
     }
 }
