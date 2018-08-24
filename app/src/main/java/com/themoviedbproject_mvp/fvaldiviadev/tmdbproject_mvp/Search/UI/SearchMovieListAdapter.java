@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.FoundMovie;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.R;
+import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Search.SearchContract;
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Utils.Constants;
 
 import java.util.ArrayList;
@@ -27,10 +28,12 @@ public class SearchMovieListAdapter extends RecyclerView.Adapter {
     private int visibleThreshold = 5;
     private int lastVisibleItem, totalItemCount;
     private boolean loading;
-    private OnLoadMoreSearchMoviesListener onLoadMoreMoviesListener;
+    private SearchContract.View.OnLoadMoreSearchMoviesListener onLoadMoreMoviesListener;
 
 
-    public SearchMovieListAdapter(RecyclerView recyclerView) {
+    public SearchMovieListAdapter(RecyclerView recyclerView, final SearchContract.View.OnLoadMoreSearchMoviesListener onLoadMoreSearchMoviesListener) {
+        this.onLoadMoreMoviesListener=onLoadMoreSearchMoviesListener;
+
         foundMovieList = new ArrayList<FoundMovie>();
 
         if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
@@ -124,10 +127,6 @@ public class SearchMovieListAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         return foundMovieList.size();
-    }
-
-    public void setOnLoadMoreMoviesListener(OnLoadMoreSearchMoviesListener onLoadMoreMoviesListener) {
-        this.onLoadMoreMoviesListener = onLoadMoreMoviesListener;
     }
 
 

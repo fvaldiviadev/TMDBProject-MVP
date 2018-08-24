@@ -12,6 +12,9 @@ public interface SearchContract {
         void setLoading(boolean loading);
         void showError(String error);
         void hideList(boolean hide);
+        interface OnLoadMoreSearchMoviesListener {
+            void onLoadMoreMovies();
+        }
 
     }
 
