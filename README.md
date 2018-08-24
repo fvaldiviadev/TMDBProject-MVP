@@ -13,7 +13,9 @@ With the intention of show the progress and the improves of each feature of the 
     - DAO: methods to obtain the data. There will be a DAO for each origin (Network, local database, internal memory, xml of project resources ...) 
 
 The folder structure is this:
+
 ![structure](https://github.com/fvaldiviadev/TMDBProject-MVP/blob/MVP_Clean_arquitecture/img1_readme.png?raw=true)
+
 I distribute the code in four main folders, two for each screen of the app, a Data folder where you can find the repositories and data sources, and a Util folder for constants class or any class of global access.
 
 
