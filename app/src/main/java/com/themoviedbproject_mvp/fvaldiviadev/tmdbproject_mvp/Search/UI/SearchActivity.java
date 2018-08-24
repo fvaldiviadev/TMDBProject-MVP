@@ -20,7 +20,7 @@ import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Search.SearchContr
 
 import java.util.List;
 
-public class SearchActivity extends AppCompatActivity implements SearchContract.View {
+public class SearchActivity extends AppCompatActivity implements SearchContract.View,SearchContract.View.OnLoadMoreSearchMoviesListener {
 
     private SearchContract.Presenter presenter;
 
@@ -65,19 +65,11 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
     }
 
     private void setAdapter() {
-        adapter = new SearchMovieListAdapter(recyclerView);
+        adapter = new SearchMovieListAdapter(recyclerView,this);
 
         recyclerView.setAdapter(adapter);
 
         setLoading(true);
-
-
-        adapter.setOnLoadMoreMoviesListener(new OnLoadMoreSearchMoviesListener() {
-            @Override
-            public void onLoadMoreMovies() {
-                presenter.loadMoreMovies(searchEditText.getText().toString());
-            }
-        });
     }
 
     private TextWatcher listenerTextWatcher(){
@@ -130,5 +122,10 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
         } else {
             pb_searchlist.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onLoadMoreMovies() {
+        presenter.loadMoreMovies(searchEditText.getText().toString());
     }
 }

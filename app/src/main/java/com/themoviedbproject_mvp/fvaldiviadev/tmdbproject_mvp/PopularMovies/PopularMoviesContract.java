@@ -1,11 +1,8 @@
 package com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.PopularMovies;
 
 import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.PopularMovie;
-import com.themoviedbproject_mvp.fvaldiviadev.tmdbproject_mvp.Data.Network.Models.PopularMoviesFeed;
 
 import java.util.List;
-
-import retrofit2.Response;
 
 public interface PopularMoviesContract {
 
