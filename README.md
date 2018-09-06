@@ -22,4 +22,4 @@ I distribute the code in four main folders, two for each screen of the app, a Da
 This project has been developed in **Java**, using **Android Studio** and implementing the libraries **Retrofit and Glide**.
 
 
-|  ![Infinitelist](https://media.giphy.com/media/SIIzinjIN13wF6mNRa/giphy.gif)| ![Search while typing](https://media.giphy.com/media/Ec5Tl1i7M4ZJIawXzB/giphy.gif)
+![Infinitelist](https://github.com/fvaldiviadev/TMDBProject-MVP/blob/MVP_Clean_arquitecture/gif1_readme.gif) ![Search while typing](https://github.com/fvaldiviadev/TMDBProject-MVP/blob/MVP_Clean_arquitecture/gif2_readme.gif)
