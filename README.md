@@ -1,6 +1,6 @@
-# TMDBProject-MVP
+# TMDBProject-MVP-Clean-Architecture
 
-This **android app** does the same functions that the [TMDBProject](https://github.com/fvaldiviadev/TMDBProject) of this repository, but it is developed with **Model View Presenter** ([MVP](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter)) arquitecture and using **Clean Arquitecture** concepts.
+This **android app** does the same functions that the [TMDBProject](https://github.com/fvaldiviadev/TMDBProject) of this repository, but it is developed with **Model View Presenter** ([MVP](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter)) arquitecture and using **Clean Architecture** concepts.
 
 With the intention of show the progress and the improves of each feature of the project, you can find two branches:
  - **MVP_Basic** branch: I use contracts to define the functions that presenters and view implements. The view doesn´t use data, just show it. The presenter has all business logic. 
